@@ -1,0 +1,274 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #0f172a;
+  --color-navy-light: #1e293b;
+  --color-navy-deep: #0a1628;
+  --color-ice: #0284c7;
+  --color-ice-light: #38bdf8;
+  --color-frost: #e0f2fe;
+  --color-signal: #f97316;
+  --color-signal-light: #fb923c;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Barlow Condensed", "Arial Narrow", ui-sans-serif, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #ffffff;
+  color: #0f172a;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  text-wrap: balance;
+}
+
+::selection {
+  background-color: #0284c7;
+  color: white;
+}
+
+.frost {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.frost-light {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.text-frost-gradient {
+  background: linear-gradient(180deg, #ffffff 0%, #bae6fd 55%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Beacon dot */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.7);
+  }
+  50% {
+    opacity: 0.6;
+    box-shadow: 0 0 0 6px rgba(249, 115, 22, 0);
+  }
+}
+.animate-pulse-dot {
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
+
+/* Tiled snowfall layer: slides down exactly one tile per loop, so the seam never shows. */
+.snow-sway {
+  position: absolute;
+  inset: 0 -20px;
+  animation: snow-sway ease-in-out infinite alternate;
+}
+.snow-layer {
+  position: absolute;
+  inset: calc(var(--tile) * -1) 0 0 0;
+  background-repeat: repeat;
+  animation: snow-drop linear infinite;
+  will-change: transform;
+}
+@keyframes snow-drop {
+  to {
+    transform: translate3d(0, var(--tile), 0);
+  }
+}
+@keyframes snow-sway {
+  from {
+    transform: translate3d(-12px, 0, 0);
+  }
+  to {
+    transform: translate3d(12px, 0, 0);
+  }
+}
+
+/* Snow loader: a plow blade clearing a snowy bar */
+@keyframes plow-clear {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes plow-move {
+  from {
+    left: 0%;
+  }
+  to {
+    left: 100%;
+  }
+}
+.plow-cleared {
+  animation: plow-clear 1.8s ease-in-out infinite;
+}
+.plow-blade {
+  animation: plow-move 1.8s ease-in-out infinite;
+}
+.snow-spin-soft {
+  animation: soft-bob 2.4s ease-in-out infinite;
+}
+@keyframes soft-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(-4deg);
+  }
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s ease var(--reveal-delay, 0ms),
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms),
+    translate 0.3s ease,
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Plow route timeline */
+@keyframes route-x {
+  0% {
+    left: 0%;
+  }
+  85%,
+  100% {
+    left: 100%;
+  }
+}
+@keyframes route-w {
+  0% {
+    width: 0%;
+  }
+  85%,
+  100% {
+    width: 100%;
+  }
+}
+@keyframes route-y {
+  0% {
+    top: 0%;
+  }
+  85%,
+  100% {
+    top: 100%;
+  }
+}
+@keyframes route-h {
+  0% {
+    height: 0%;
+  }
+  85%,
+  100% {
+    height: 100%;
+  }
+}
+.route-run .route-truck-x {
+  animation: route-x 7s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+.route-run .route-fill-x {
+  animation: route-w 7s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+.route-run .route-truck-y {
+  animation: route-y 7s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+.route-run .route-fill-y {
+  animation: route-h 7s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+/* City marquee */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 38s linear infinite;
+}
+
+/* Hero scroll cue */
+@keyframes cue {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+}
+.animate-cue {
+  animation: cue 1.8s ease-in-out infinite;
+}
+
+/* Blinking beacon light on buttons */
+@keyframes beacon {
+  0%,
+  100% {
+    box-shadow:
+      0 10px 30px -8px rgba(249, 115, 22, 0.55),
+      0 0 0 0 rgba(249, 115, 22, 0.45);
+  }
+  50% {
+    box-shadow:
+      0 10px 30px -8px rgba(249, 115, 22, 0.75),
+      0 0 0 8px rgba(249, 115, 22, 0);
+  }
+}
+.btn-beacon {
+  animation: beacon 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .snow-layer,
+  .snow-sway,
+  .plow-cleared,
+  .plow-blade,
+  .snow-spin-soft,
+  .animate-marquee,
+  .animate-cue,
+  .btn-beacon,
+  .animate-pulse-dot,
+  .route-run .route-truck-x,
+  .route-run .route-fill-x,
+  .route-run .route-truck-y,
+  .route-run .route-fill-y {
+    animation: none;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
